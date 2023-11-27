@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSS Unit Converter To Pixel</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <div class="converter">
+    <h1>CSS Unit Converter To Pixel</h1>
+    <form>
+      <select id="unit-type">
+        <option value="px">Pixels (px)</option>
+        <option value="%">Percentage (%)</option>
+        <option value="em">EM</option>
+        <option value="rem">REM</option>
+        <option value="vw">Viewport Width (vw)</option>
+        <option value="vh">Viewport Height (vh)</option>
+        <option value="in">Inches (in)</option>
+        <option value="cm">Centimeters (cm)</option>
+        <option value="mm">Millimeters (mm)</option>
+        <option value="pt">Points (pt)</option>
+      </select>
+
+      <input type="number" id="unit-value" placeholder="Enter value">
+
+      <input type="text" id="pixel-value" placeholder="Pixel value" disabled>
+
+      <button id="convert-btn">Convert</button>
+    </form>
+
+    <div id="result-container"></div>
+  </div>
+
+  <script>
+    const convertBtn = document.getElementById('convert-btn');
+    const unitValue = document.getElementById('unit-value');
+    const unitType = document.getElementById('unit-type');
+    const pixelValue = document.getElementById('pixel-value');
+    const resultContainer = document.getElementById('result-container');
+
+    convertBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+
+      const inputValue = unitValue.value;
+      const inputUnit = unitType.value;
+
+      if (inputValue && inputUnit) {
+        const convertedValue = convertToPixel(inputValue, inputUnit);
+        pixelValue.value = `${convertedValue}px`;
+        resultContainer.innerHTML = `${inputValue} ${inputUnit} = ${convertedValue}px`;
+      } else {
+        resultContainer.innerHTML = 'Please enter a value and select a unit';
+      }
+    });
+
+    function convertToPixel(value, unit) {
+      switch (unit) {
+        case 'px': return value;
+        case '%': return parseFloat(value) / 100 * window.innerWidth;
+        case 'em': return parseFloat(value) * parseFloat(getComputedStyle(document.body).fontSize);
+        case 'rem': return parseFloat(value) * parseFloat(getComputedStyle(document.documentElement).fontSize);
+        case 'vw': return parseFloat(value) / 100 * window.innerWidth;
+        case 'vh': return parseFloat(value) / 100 * window.innerHeight;
+        case 'in': return parseFloat(value) * 96;
+        case 'cm': return parseFloat(value) / 2.54 * 96;
+        case 'mm': return parseFloat(value) / 25.4 * 96;
+        case 'pt': return parseFloat(value) * 96 / 72;
+        default: return 0;
+      }
+    }
+  </script>
+</body>
+</html>
